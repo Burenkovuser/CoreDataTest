@@ -9,6 +9,35 @@
 #import "AppDelegate.h"
 #import "Student+CoreDataClass.h"
 
+static NSString* firstNames[] = {
+    @"Tran", @"Lenore", @"Bud", @"Fredda", @"Katrice",
+    @"Clyde", @"Hildegard", @"Vernell", @"Nellie", @"Rupert",
+    @"Billie", @"Tamica", @"Crystle", @"Kandi", @"Caridad",
+    @"Vanetta", @"Taylor", @"Pinkie", @"Ben", @"Rosanna",
+    @"Eufemia", @"Britteny", @"Ramon", @"Jacque", @"Telma",
+    @"Colton", @"Monte", @"Pam", @"Tracy", @"Tresa",
+    @"Willard", @"Mireille", @"Roma", @"Elise", @"Trang",
+    @"Ty", @"Pierre", @"Floyd", @"Savanna", @"Arvilla",
+    @"Whitney", @"Denver", @"Norbert", @"Meghan", @"Tandra",
+    @"Jenise", @"Brent", @"Elenor", @"Sha", @"Jessie"
+};
+
+static NSString* lastNames[] = {
+    
+    @"Farrah", @"Laviolette", @"Heal", @"Sechrest", @"Roots",
+    @"Homan", @"Starns", @"Oldham", @"Yocum", @"Mancia",
+    @"Prill", @"Lush", @"Piedra", @"Castenada", @"Warnock",
+    @"Vanderlinden", @"Simms", @"Gilroy", @"Brann", @"Bodden",
+    @"Lenz", @"Gildersleeve", @"Wimbish", @"Bello", @"Beachy",
+    @"Jurado", @"William", @"Beaupre", @"Dyal", @"Doiron",
+    @"Plourde", @"Bator", @"Krause", @"Odriscoll", @"Corby",
+    @"Waltman", @"Michaud", @"Kobayashi", @"Sherrick", @"Woolfolk",
+    @"Holladay", @"Hornback", @"Moler", @"Bowles", @"Libbey",
+    @"Spano", @"Folson", @"Arguelles", @"Burke", @"Rook"
+    
+};
+
+
 @interface AppDelegate ()
 
 //устанавливаем своейства
@@ -23,6 +52,17 @@
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+
+-(Student*) addRandomStudent {
+    Student* student = [NSEntityDescription insertNewObjectForEntityForName:@"Student"
+                                                     inManagedObjectContext:self.managedObjectContext];
+    student.score = 4;
+    student.dateOfBirth = [NSDate dateWithTimeIntervalSince1970:60 * 60 * 24 * 365 * arc4random_uniform(31)];
+    student.firstName = firstNames[arc4random_uniform(50)];
+    student.lastName = lastNames[arc4random_uniform(50)];
+    
+    return student;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
@@ -43,6 +83,11 @@
      NSLog(@"%@", [error localizedDescription]);
      }
     */
+    
+   // [self addRandomStudent];
+   // [self.managedObjectContext save:nil];
+    Student *student = [self addRandomStudent];
+    [student.managedObjectContext save:nil];
     
     //считываем данные из базы
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
